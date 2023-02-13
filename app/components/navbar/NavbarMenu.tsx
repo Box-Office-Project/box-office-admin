@@ -1,32 +1,48 @@
-import React from "react";
+import React, { Fragment } from "react";
+import { NavLink } from "@remix-run/react";
 import type { NavItem } from "./Navbar";
-import { NavbarItem } from "./NavbarItem";
 
 type NavbarMenuProps = {
   navitem: NavItem;
 };
 
 export const NavbarMenu = ({ navitem }: NavbarMenuProps) => {
-  const { title, id, link } = navitem;
+  const { title, link } = navitem;
 
-  if (!navitem.children) {
+  const renderNavItem = (
+    link: string,
+    title: string,
+    isChild: boolean = false
+  ) => {
+    const activeClassName =
+      "block pl-4 py-2 cursor-pointer text-indigo-500 border-r-4 border-solid border-indigo-500";
+    const unactiveClassName = "block pl-4 py-2 cursor-pointer text-gray-500";
     return (
-      <li className="hover:bg-indigo-100">
-        <NavbarItem navitem={navitem} />
+      <li className={`hover:bg-indigo-100 ${isChild ? "pl-4" : ""}`}>
+        <NavLink
+          to={link}
+          className={({ isActive }) =>
+            isActive ? activeClassName : unactiveClassName
+          }
+        >
+          {title}
+        </NavLink>
       </li>
     );
+  };
+
+  if (!navitem.children) {
+    return renderNavItem(link, title);
   }
 
   return (
     <>
-      <li className="hover:bg-indigo-100">
-        <NavbarItem navitem={{ title, id, link }} />
-      </li>
+      {renderNavItem(link, title)}
       <ul>
         {navitem.children.map((item) => (
-          <li key={item.id} className="pl-4 hover:bg-indigo-100">
-            <NavbarItem navitem={item} />
-          </li>
+          <Fragment key={item.id}>
+            {renderNavItem(item.link, item.title, true)}
+          </Fragment>
         ))}
       </ul>
     </>
