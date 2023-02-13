@@ -28,7 +28,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body className="bg-stone-100">
+      <body className="bg-stone-100 flex">
         <Navbar />
         <Outlet />
         <ScrollRestoration />

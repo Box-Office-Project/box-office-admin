@@ -24,6 +24,7 @@ export const NavbarMenu = ({ navitem }: NavbarMenuProps) => {
           className={({ isActive }) =>
             isActive ? activeClassName : unactiveClassName
           }
+          end={isChild}
         >
           {title}
         </NavLink>

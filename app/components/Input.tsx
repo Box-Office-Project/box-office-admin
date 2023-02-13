@@ -18,7 +18,7 @@ export function TextInput({ id, label, placeholder = "" }: InputProps) {
           type="text"
           name={id}
           id={id}
-          className="w-full py-3 outline-0 rounded-md border-gray-300 border-solid border-2 pl-5 pr-5 focus:border-indigo-500"
+          className="w-full py-2 px-2 outline-0 rounded-md border-gray-300 border-solid border-2 focus:border-indigo-500"
           placeholder={placeholder}
         />
       </div>
@@ -38,7 +38,7 @@ export function PasswordInput({ id, label, placeholder = "" }: InputProps) {
           type={isVisible ? "text" : "password"}
           name={id}
           id={id}
-          className="w-full py-3 outline-0 rounded-md border-gray-300 border-solid border-2 pl-5 pr-5 focus:border-indigo-500"
+          className="w-full py-2 px-2 outline-0 rounded-md border-gray-300 border-solid border-2  focus:border-indigo-500"
           placeholder={placeholder}
         />
         <div

@@ -30,7 +30,7 @@ export const Navbar = () => {
   return (
     <nav
       ref={ref}
-      className="w-sidebar h-screen overflow-y-auto bg-white scrollbar-hide relative border-gray-200 border-2 border-solid flex flex-col justify-between"
+      className="w-sidebar min-w-sidebar relative h-screen overflow-y-auto bg-white scrollbar-hide border-gray-200 border-2 border-solid flex flex-col justify-between"
     >
       <div>
         <NavLink className="block pl-4 py-4 font-bold text-lg" to="/home">
@@ -62,7 +62,15 @@ export const Navbar = () => {
 
 const navtree: NavItem[] = [
   { title: "홈", link: "/home", id: "home" },
-  { title: "영화 목록 관리", link: "/movie", id: "movie" },
+  {
+    title: "전체 영화 관리",
+    link: "/movie",
+    id: "movie",
+    children: [
+      { title: "영화 목록 조회", link: "/movie", id: "movie.movie" },
+      { title: "영화 추가", link: "/movie/create", id: "movie.manage" },
+    ],
+  },
   {
     title: "영화관 관리",
     link: "/theater",

@@ -6,6 +6,9 @@ module.exports = {
       spacing: {
         sidebar: "16rem",
       },
+      minWidth: {
+        sidebar: "16rem",
+      },
     },
   },
   plugins: [require("tailwind-scrollbar-hide")],
