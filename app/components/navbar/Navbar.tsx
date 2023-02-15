@@ -4,6 +4,7 @@ import { useIsOverflow } from "../../hooks/useIsOverflow";
 import { NavbarMenu } from "./NavbarMenu";
 import { LogoutMenu } from "./LogoutMenu";
 import { NavbarUserInfo } from "./NavbarUserInfo";
+import { NavLink, useLocation } from "@remix-run/react";
 
 export interface NavItem {
   id: string;
@@ -12,16 +13,29 @@ export interface NavItem {
   children?: NavItem[];
 }
 
-export const Navbar = () => {
+const Navbar = () => {
   const ref = useRef<HTMLDivElement>(null);
+  const location = useLocation();
   const { refIsOverflow, refIsScrollEnd } = useIsOverflow(ref);
+
+  const shouldHideNavbar = () => {
+    const pathname = location?.pathname;
+    return pathname === "/login";
+  };
+
+  if (shouldHideNavbar()) {
+    return null;
+  }
+
   return (
-    <div
+    <nav
       ref={ref}
-      className="w-sidebar h-screen overflow-y-auto bg-white scrollbar-hide relative border-gray-200 border-2 border-solid flex flex-col justify-between"
+      className="w-sidebar min-w-sidebar relative h-screen overflow-y-auto bg-white scrollbar-hide border-gray-200 border-2 border-solid flex flex-col justify-between"
     >
       <div>
-        <h1 className="pl-4 py-4 font-bold text-lg ">Box Office</h1>
+        <NavLink className="block pl-4 py-4 font-bold text-lg" to="/home">
+          Box Office
+        </NavLink>
         <ul>
           {navtree.map((navitem) => (
             <NavbarMenu key={navitem.id} navitem={navitem} />
@@ -42,13 +56,21 @@ export const Navbar = () => {
         />
       </ul>
       {refIsOverflow && !refIsScrollEnd ? <ScrollIndicator /> : null}
-    </div>
+    </nav>
   );
 };
 
 const navtree: NavItem[] = [
   { title: "홈", link: "/home", id: "home" },
-  { title: "전체 영화 목록 관리", link: "/movie", id: "movie" },
+  {
+    title: "전체 영화 관리",
+    link: "/movie",
+    id: "movie",
+    children: [
+      { title: "영화 목록 조회", link: "/movie", id: "movie.movie" },
+      { title: "영화 추가", link: "/movie/create", id: "movie.manage" },
+    ],
+  },
   {
     title: "영화관 관리",
     link: "/theater",
@@ -67,5 +89,7 @@ const navtree: NavItem[] = [
       },
     ],
   },
-  { title: "사용자 관리", link: "/user", id: "3" },
+  { title: "사용자 관리", link: "/user", id: "user" },
 ];
+
+export default Navbar;
