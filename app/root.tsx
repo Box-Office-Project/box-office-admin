@@ -7,7 +7,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-import { Navbar } from "./components/navbar/Navbar";
+import Navbar from "./components/navbar/Navbar";
 
 import styles from "./styles/app.css";
 

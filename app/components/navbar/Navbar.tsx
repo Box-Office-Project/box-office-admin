@@ -13,7 +13,7 @@ export interface NavItem {
   children?: NavItem[];
 }
 
-export const Navbar = () => {
+const Navbar = () => {
   const ref = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const { refIsOverflow, refIsScrollEnd } = useIsOverflow(ref);
@@ -91,3 +91,5 @@ const navtree: NavItem[] = [
   },
   { title: "사용자 관리", link: "/user", id: "user" },
 ];
+
+export default Navbar;

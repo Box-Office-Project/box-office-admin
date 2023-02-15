@@ -3,11 +3,10 @@ import React from "react";
 interface ButtonProps extends React.ComponentPropsWithoutRef<"button"> {
   children: React.ReactNode;
   size: "sm" | "md" | "lg";
-  onClick?: () => void;
 }
 
 function Button(props: ButtonProps) {
-  const { children, size, onClick, ...rest } = props;
+  const { children, size, ...rest } = props;
   const boxSize =
     size === "sm"
       ? "w-24 h-8"
@@ -27,7 +26,6 @@ function Button(props: ButtonProps) {
   return (
     <button
       className={`${boxSize} ${fontSize} bg-indigo-700 text-white rounded-md hover:bg-indigo-800`}
-      onClick={onClick}
       {...rest}
     >
       {children}

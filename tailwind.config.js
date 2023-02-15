@@ -9,6 +9,9 @@ module.exports = {
       minWidth: {
         sidebar: "16rem",
       },
+      gridAutoColumns: {
+        poster: "12rem",
+      },
     },
   },
   plugins: [require("tailwind-scrollbar-hide")],
