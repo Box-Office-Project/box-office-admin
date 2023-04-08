@@ -5,10 +5,7 @@ export const LogoutMenu = () => {
 
   return (
     <li className="hover:bg-indigo-100">
-      <div
-        className={`pl-4 py-2 cursor-pointer text-gray-500`}
-        onClick={handleLogout}
-      >
+      <div className={`pl-4 py-2 cursor-pointer`} onClick={handleLogout}>
         로그아웃
       </div>
     </li>

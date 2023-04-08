@@ -16,7 +16,7 @@ export const NavbarMenu = ({ navitem }: NavbarMenuProps) => {
   ) => {
     const activeClassName =
       "block pl-4 py-2 cursor-pointer text-indigo-500 border-r-4 border-solid border-indigo-500";
-    const unactiveClassName = "block pl-4 py-2 cursor-pointer text-gray-500";
+    const unactiveClassName = "block pl-4 py-2 cursor-pointer";
     return (
       <li className={`hover:bg-indigo-100 ${isChild ? "pl-4" : ""}`}>
         <NavLink
@@ -39,7 +39,7 @@ export const NavbarMenu = ({ navitem }: NavbarMenuProps) => {
   return (
     <>
       {renderNavItem(link, title)}
-      <ul>
+      <ul className="text-gray-500 font-light">
         {navitem.children.map((item) => (
           <Fragment key={item.id}>
             {renderNavItem(item.link, item.title, true)}
