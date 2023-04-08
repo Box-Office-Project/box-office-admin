@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { ScrollIndicator } from "../navbar/ScrollIndicator";
 import { useIsOverflow } from "../../hooks/useIsOverflow";
 import { NavbarMenu } from "./NavbarMenu";
@@ -15,15 +15,19 @@ export interface NavItem {
 
 const Navbar = () => {
   const ref = useRef<HTMLDivElement>(null);
+  const [isShow, setIsShow] = useState(false);
   const location = useLocation();
   const { refIsOverflow, refIsScrollEnd } = useIsOverflow(ref);
 
-  const shouldHideNavbar = () => {
+  useEffect(() => {
     const pathname = location?.pathname;
-    return pathname === "/login";
-  };
 
-  if (shouldHideNavbar()) {
+    if (pathname !== "/login") {
+      setIsShow(true);
+    }
+  }, [location]);
+
+  if (!isShow) {
     return null;
   }
 
@@ -49,11 +53,7 @@ const Navbar = () => {
           navitem={{ title: "설정", link: "/setting", id: "setting" }}
         />
         <LogoutMenu />
-        <NavbarUserInfo
-          profileImage="img"
-          username="Musharof"
-          email="hello@tailgrids.com"
-        />
+        <NavbarUserInfo username="Musharof" email="hello@tailgrids.com" />
       </ul>
       {refIsOverflow && !refIsScrollEnd ? <ScrollIndicator /> : null}
     </nav>
