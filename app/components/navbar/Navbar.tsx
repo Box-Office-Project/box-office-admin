@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { ScrollIndicator } from "../navbar/ScrollIndicator";
 import { useIsOverflow } from "../../hooks/useIsOverflow";
 import { NavbarMenu } from "./NavbarMenu";
@@ -15,15 +15,19 @@ export interface NavItem {
 
 const Navbar = () => {
   const ref = useRef<HTMLDivElement>(null);
+  const [isShow, setIsShow] = useState(false);
   const location = useLocation();
   const { refIsOverflow, refIsScrollEnd } = useIsOverflow(ref);
 
-  const shouldHideNavbar = () => {
+  useEffect(() => {
     const pathname = location?.pathname;
-    return pathname === "/login";
-  };
 
-  if (shouldHideNavbar()) {
+    if (pathname !== "/login") {
+      setIsShow(true);
+    }
+  }, [location]);
+
+  if (!isShow) {
     return null;
   }
 
@@ -49,11 +53,7 @@ const Navbar = () => {
           navitem={{ title: "설정", link: "/setting", id: "setting" }}
         />
         <LogoutMenu />
-        <NavbarUserInfo
-          profileImage="img"
-          username="Musharof"
-          email="hello@tailgrids.com"
-        />
+        <NavbarUserInfo username="Musharof" email="hello@tailgrids.com" />
       </ul>
       {refIsOverflow && !refIsScrollEnd ? <ScrollIndicator /> : null}
     </nav>
@@ -63,31 +63,18 @@ const Navbar = () => {
 const navtree: NavItem[] = [
   { title: "홈", link: "/home", id: "home" },
   {
-    title: "전체 영화 관리",
+    title: "영화 관리",
     link: "/movie",
     id: "movie",
     children: [
-      { title: "영화 목록 조회", link: "/movie", id: "movie.movie" },
+      { title: "영화 조회", link: "/movie", id: "movie.movie" },
       { title: "영화 추가", link: "/movie/create", id: "movie.manage" },
     ],
   },
   {
-    title: "영화관 관리",
-    link: "/theater",
-    id: "theater",
-    children: [
-      { title: "영화관 목록 관리", link: "/theater", id: "theater.theater" },
-      {
-        title: "상영관 관리",
-        link: "/theater/auditorium",
-        id: "theater.auditorium",
-      },
-      {
-        title: "상영 영화 관리",
-        link: "/theater/playing",
-        id: "theater.playing",
-      },
-    ],
+    title: "상영 일정 관리",
+    link: "/calendar",
+    id: "calendar",
   },
   { title: "사용자 관리", link: "/user", id: "user" },
 ];

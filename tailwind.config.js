@@ -4,10 +4,10 @@ module.exports = {
   theme: {
     extend: {
       spacing: {
-        sidebar: "16rem",
+        sidebar: "12rem",
       },
       minWidth: {
-        sidebar: "16rem",
+        sidebar: "12rem",
       },
       gridAutoColumns: {
         poster: "12rem",

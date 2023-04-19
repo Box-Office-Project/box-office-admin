@@ -27,7 +27,7 @@ const MovieCreate = (props: Props) => {
               label="러닝타임"
               placeholder="러닝타임"
             />
-            <div className="grid grid-cols-2 gap-4">
+            {/* <div className="grid grid-cols-2 gap-4">
               <TextInput
                 id="start-date"
                 label="상영시작일"
@@ -38,7 +38,7 @@ const MovieCreate = (props: Props) => {
                 label="상영종료일"
                 placeholder="상영종료일"
               />
-            </div>
+            </div> */}
           </div>
           <ImageInput id="poster-image" label="포스터" placeholder="포스터" />
           <div></div>

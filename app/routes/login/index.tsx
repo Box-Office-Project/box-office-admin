@@ -3,7 +3,7 @@ import { TextInput, PasswordInput } from "~/components/Input";
 
 export default function Login() {
   return (
-    <div className="h-screen flex flex-col items-center justify-center">
+    <div className="w-screen h-screen flex flex-col items-center justify-center">
       <h1 className="block text-3xl mb-8">로그인</h1>
       <form className="flex flex-col items-center gap-8 w-96">
         <TextInput label="ID" id="ID" placeholder="ID" />
