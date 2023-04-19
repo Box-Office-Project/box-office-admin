@@ -63,31 +63,18 @@ const Navbar = () => {
 const navtree: NavItem[] = [
   { title: "홈", link: "/home", id: "home" },
   {
-    title: "전체 영화 관리",
+    title: "영화 관리",
     link: "/movie",
     id: "movie",
     children: [
-      { title: "영화 목록 조회", link: "/movie", id: "movie.movie" },
+      { title: "영화 조회", link: "/movie", id: "movie.movie" },
       { title: "영화 추가", link: "/movie/create", id: "movie.manage" },
     ],
   },
   {
-    title: "영화관 관리",
-    link: "/theater",
-    id: "theater",
-    children: [
-      { title: "영화관 목록 관리", link: "/theater", id: "theater.theater" },
-      {
-        title: "상영관 관리",
-        link: "/theater/auditorium",
-        id: "theater.auditorium",
-      },
-      {
-        title: "상영 영화 관리",
-        link: "/theater/playing",
-        id: "theater.playing",
-      },
-    ],
+    title: "상영 일정 관리",
+    link: "/calendar",
+    id: "calendar",
   },
   { title: "사용자 관리", link: "/user", id: "user" },
 ];

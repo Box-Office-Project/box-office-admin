@@ -25,7 +25,7 @@ function Button(props: ButtonProps) {
       : "";
   return (
     <button
-      className={`${boxSize} ${fontSize} bg-indigo-700 text-white rounded-md hover:bg-indigo-800`}
+      className={`${boxSize} ${fontSize} bg-indigo-700 text-white rounded-md hover:bg-indigo-800 transition-colors`}
       {...rest}
     >
       {children}
