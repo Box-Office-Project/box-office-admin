@@ -1,8 +1,15 @@
 import React from "react";
+import MovieList from "~/components/movie/MovieList";
+import { PageContainer } from "~/components/PageContainer";
+import { SectionContainer } from "~/components/SectionContainer";
 
-type Props = {};
-
-const Movie = (props: Props) => {
-  return <div>index</div>;
+const Movie = () => {
+  return (
+    <PageContainer pageTitle="영화 조회">
+      <SectionContainer>
+        <MovieList />
+      </SectionContainer>
+    </PageContainer>
+  );
 };
 export default Movie;
