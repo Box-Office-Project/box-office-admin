@@ -12,6 +12,10 @@ module.exports = {
       gridAutoColumns: {
         poster: "12rem",
       },
+      aspectRatio: {
+        "3/4": "3 / 4",
+        "3/1": "3 / 1",
+      },
     },
   },
   plugins: [require("tailwind-scrollbar-hide")],
