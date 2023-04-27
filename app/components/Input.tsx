@@ -1,12 +1,12 @@
+import type { InputHTMLAttributes } from "react";
 import React, { useState } from "react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import { PhotoIcon } from "@heroicons/react/24/outline";
 
-type InputProps = {
-  id: string;
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   placeholder?: string;
-};
+}
 
 export function TextInput({ id, label, placeholder = "" }: InputProps) {
   return (

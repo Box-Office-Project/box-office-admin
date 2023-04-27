@@ -1,15 +1,15 @@
 import React from "react";
+import ErrorContainer from "~/components/ErrorContainer";
 import MovieList from "~/components/movie/MovieList";
-import { PageContainer } from "~/components/PageContainer";
-import { SectionContainer } from "~/components/SectionContainer";
 
-const Movie = () => {
-  return (
-    <PageContainer pageTitle="영화 조회">
-      <SectionContainer>
-        <MovieList />
-      </SectionContainer>
-    </PageContainer>
-  );
+type Props = {};
+
+const index = (props: Props) => {
+  return <MovieList />;
 };
-export default Movie;
+
+export default index;
+
+export function ErrorBoundary() {
+  return <ErrorContainer>{"영화 조회에 실패했습니다."}</ErrorContainer>;
+}
