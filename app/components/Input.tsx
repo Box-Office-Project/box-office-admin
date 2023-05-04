@@ -8,7 +8,12 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   placeholder?: string;
 }
 
-export function TextInput({ id, label, placeholder = "" }: InputProps) {
+export function Input({
+  id,
+  label,
+  type = "text",
+  placeholder = "",
+}: InputProps) {
   return (
     <div className="w-full">
       <label htmlFor={id} className="text-gray-700">
@@ -16,7 +21,7 @@ export function TextInput({ id, label, placeholder = "" }: InputProps) {
       </label>
       <div className="mt-2 rounded-md">
         <input
-          type="text"
+          type={type}
           name={id}
           id={id}
           className="w-full py-2 px-2 outline-0 rounded-md border-gray-300 border-solid border-2 focus:border-indigo-500"

@@ -5,8 +5,8 @@ import MovieListCard from "./MovieListCard";
 
 export const loader = async () => {
   try {
-    const { data } = await axios.get("https://localhost:8080/api/movies");
-    return data;
+    const res = await axios.get("http://localhost:8080/api/movies");
+    return res.data;
   } catch (error) {
     throw new Error("Something wrong");
   }
@@ -19,7 +19,7 @@ const MovieList = (props: Props) => {
 
   return (
     <div className="grid md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2">
-      {data.map((item: any) => (
+      {data?.map((item: any) => (
         <MovieListCard key={item.movieId} movie={data} />
       ))}
     </div>
