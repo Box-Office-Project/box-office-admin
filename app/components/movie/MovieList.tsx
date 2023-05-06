@@ -1,29 +1,32 @@
 import React from "react";
-import { useLoaderData } from "@remix-run/react";
-import axios from "axios";
+import type { MovieData } from "./MovieListCard";
 import MovieListCard from "./MovieListCard";
 
-export const loader = async () => {
-  try {
-    const res = await axios.get("http://localhost:8080/api/movies");
-    return res.data;
-  } catch (error) {
-    throw new Error("Something wrong");
-  }
+type Props = {
+  movies: MovieData[];
 };
 
-type Props = {};
-
-const MovieList = (props: Props) => {
-  const data = useLoaderData<typeof loader>();
+const MovieList = ({ movies }: Props) => {
+  if (movies.length === 0) {
+    return (
+      <div className="grid md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2">
+        {/* TODO: No data component 만들기 */}
+        영화 데이터가 없습니다.
+      </div>
+    );
+  }
 
   return (
     <div className="grid md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2">
-      {data?.map((item: any) => (
-        <MovieListCard key={item.movieId} movie={data} />
+      {movies?.map((item: any) => (
+        <MovieListCard key={item.movieId} movie={item} />
       ))}
     </div>
   );
+};
+
+MovieList.defaultProps = {
+  movies: [],
 };
 
 export default MovieList;

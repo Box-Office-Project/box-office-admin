@@ -2,7 +2,8 @@ import React from "react";
 import { compareDate } from "~/utils/dateTime";
 import BadgeShow from "./BadgeShow";
 
-interface MovieData {
+export interface MovieData {
+  movieId?: number;
   title: string;
   posterImgUrl: string;
   diretor: string;
@@ -46,7 +47,8 @@ const MovieListCard = ({ movie }: MovieListCardProps) => {
         <img
           className="w-full h-full object-cover"
           src={
-            "https://newsimg-hams.hankookilbo.com/2022/10/24/8d55455e-b92e-4159-80e1-de2a3275960f.jpg"
+            posterImgUrl ||
+            "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
           }
           alt={title}
         />
@@ -57,7 +59,7 @@ const MovieListCard = ({ movie }: MovieListCardProps) => {
           감독: {diretor} / 출연: {actor}
         </p>
         <p className="text-sm leading-6">장르: {genre}</p>
-        <p className="text-sm leading-6">{movieRated} 관람가</p>
+        <p className="text-sm leading-6">관람가: {movieRated} </p>
         <p className="text-sm leading-6">{isShowing(startDate, endDate)}</p>
       </div>
     </div>
