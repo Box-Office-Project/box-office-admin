@@ -9,9 +9,11 @@ export interface MovieData {
   diretor: string;
   actor: string;
   movieRated: string;
+  runningTime?: number;
   genre: string;
   startDate: string;
   endDate: string;
+  summary?: string;
 }
 
 type MovieListCardProps = {
