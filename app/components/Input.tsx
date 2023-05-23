@@ -1,14 +1,19 @@
+import type { InputHTMLAttributes } from "react";
 import React, { useState } from "react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
-import { PhotoIcon } from "@heroicons/react/24/outline";
+// import { PhotoIcon } from "@heroicons/react/24/outline";
 
-type InputProps = {
-  id: string;
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   placeholder?: string;
-};
+}
 
-export function TextInput({ id, label, placeholder = "" }: InputProps) {
+export function Input({
+  id,
+  label,
+  type = "text",
+  placeholder = "",
+}: InputProps) {
   return (
     <div className="w-full">
       <label htmlFor={id} className="text-gray-700">
@@ -16,7 +21,7 @@ export function TextInput({ id, label, placeholder = "" }: InputProps) {
       </label>
       <div className="mt-2 rounded-md">
         <input
-          type="text"
+          type={type}
           name={id}
           id={id}
           className="w-full py-2 px-2 outline-0 rounded-md border-gray-300 border-solid border-2 focus:border-indigo-500"
@@ -57,38 +62,42 @@ export function PasswordInput({ id, label, placeholder = "" }: InputProps) {
   );
 }
 
-interface FileWithPreview extends File {
-  preview: string;
-}
+// interface FileWithPreview extends File {
+//   preview: string;
+// }
 
-export function ImageInput({ id, label, placeholder = "" }: InputProps) {
-  const [files, setFiles] = useState<FileWithPreview[]>([]);
+export function ImageInput({ id, label }: InputProps) {
+  // TODO: 이미지 미리보기 기능 수정
 
-  const onInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const fileList = e.target.files;
-    if (!fileList) {
-      return;
-    }
+  // const [files, setFiles] = useState<FileWithPreview[]>([]);
 
-    const newFiles = [];
-    for (let i = 0; i < fileList?.length; i++) {
-      const targetFile = fileList.item(i);
-      const preview = URL.createObjectURL(targetFile!);
-      newFiles.push(Object.assign(targetFile!, { preview }));
-    }
+  // const onInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   console.log(e);
+  //   const fileList = e.target.files;
+  //   if (!fileList) {
+  //     return;
+  //   }
 
-    setFiles(newFiles);
-  };
+  //   const newFiles = [];
+  //   for (let i = 0; i < fileList?.length; i++) {
+  //     const targetFile = fileList.item(i);
+  //     const preview = URL.createObjectURL(targetFile!);
+  //     newFiles.push(Object.assign(targetFile!, { preview }));
+  //   }
 
-  const thumbs = files.map((file) => (
-    <div className="grid content-center" key={file.name}>
-      <img
-        src={file.preview}
-        onLoad={() => URL.revokeObjectURL(file.preview)}
-        className="object-fill"
-      />
-    </div>
-  ));
+  //   setFiles(newFiles);
+  // };
+
+  // const thumbs = files.map((file) => (
+  //   <div className="grid content-center" key={file.name}>
+  //     <img
+  //       src={file.preview}
+  //       alt={file.name}
+  //       onLoad={() => URL.revokeObjectURL(file.preview)}
+  //       className="object-fill"
+  //     />
+  //   </div>
+  // ));
 
   return (
     <div className="w-full">
@@ -106,13 +115,11 @@ export function ImageInput({ id, label, placeholder = "" }: InputProps) {
           focus:border-indigo-500
           file:border-0 file:p-2 file:text-gray-700 file:hover:bg-gray-200 file:transition file:cursor-pointer
           "
-          placeholder={placeholder}
           accept="image/png, image/jpeg"
-          onChange={(e) => onInput(e)}
           multiple
         />
       </div>
-      <aside className="relative my-2 h-96 p-2 grid grid-rows-1 grid-flow-col auto-cols-poster gap-2 rounded-md border-gray-300 border-solid border-2 overflow-x-auto bg-gray-100">
+      {/* <aside className="relative my-2 h-96 p-2 grid grid-rows-1 grid-flow-col auto-cols-poster gap-2 rounded-md border-gray-300 border-solid border-2 overflow-x-auto bg-gray-100">
         {thumbs.length ? (
           thumbs
         ) : (
@@ -120,7 +127,7 @@ export function ImageInput({ id, label, placeholder = "" }: InputProps) {
             <PhotoIcon className="w-full h-24" />
           </p>
         )}
-      </aside>
+      </aside> */}
     </div>
   );
 }

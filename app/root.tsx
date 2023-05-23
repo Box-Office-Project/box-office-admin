@@ -7,7 +7,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-import Navbar from "./components/navbar/Navbar";
+import ErrorContainer from "./components/ErrorContainer";
 
 import styles from "./styles/app.css";
 
@@ -29,11 +29,29 @@ export default function App() {
         <Links />
       </head>
       <body className="bg-stone-100 flex">
-        <Navbar />
         <Outlet />
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
+      </body>
+    </html>
+  );
+}
+
+export function ErrorBoundary({ error }: { error: Error }) {
+  console.error(error);
+  return (
+    <html>
+      <head>
+        <title>Error !</title>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <ErrorContainer>
+          <p>루트에서 에러 발생</p>
+        </ErrorContainer>
+        <Scripts />
       </body>
     </html>
   );

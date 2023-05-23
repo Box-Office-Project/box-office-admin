@@ -1,10 +1,10 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef } from "react";
 import { ScrollIndicator } from "../navbar/ScrollIndicator";
 import { useIsOverflow } from "../../hooks/useIsOverflow";
 import { NavbarMenu } from "./NavbarMenu";
 import { LogoutMenu } from "./LogoutMenu";
 import { NavbarUserInfo } from "./NavbarUserInfo";
-import { NavLink, useLocation } from "@remix-run/react";
+import { NavLink } from "@remix-run/react";
 
 export interface NavItem {
   id: string;
@@ -15,22 +15,7 @@ export interface NavItem {
 
 const Navbar = () => {
   const ref = useRef<HTMLDivElement>(null);
-  const [isShow, setIsShow] = useState(false);
-  const location = useLocation();
   const { refIsOverflow, refIsScrollEnd } = useIsOverflow(ref);
-
-  useEffect(() => {
-    const pathname = location?.pathname;
-
-    if (pathname !== "/login") {
-      setIsShow(true);
-    }
-  }, [location]);
-
-  if (!isShow) {
-    return null;
-  }
-
   return (
     <nav
       ref={ref}
