@@ -1,4 +1,8 @@
 import React from "react";
+import { useNavigate } from "@remix-run/react";
+import { isShowing } from "~/utils/dateTime";
+import Button from "../Button";
+import BadgeShow from "./BadgeShow";
 import type { MovieData } from "./MovieListCard";
 
 type Props = {
@@ -6,10 +10,12 @@ type Props = {
 };
 
 const MovieDetailCard = ({ movie }: Props) => {
+  const navigate = useNavigate();
   const {
+    movieId,
     title,
     posterImgUrl,
-    diretor,
+    director,
     actor,
     movieRated,
     genre,
@@ -18,8 +24,16 @@ const MovieDetailCard = ({ movie }: Props) => {
     startDate,
     endDate,
   } = movie;
+
+  function handleClickUpdate() {
+    navigate(`/movie/update/${movieId}`);
+  }
+
   return (
     <div className="relative w-full flex gap-1">
+      <div className="absolute top-2 right-2">
+        <BadgeShow status={isShowing(startDate, endDate)} />
+      </div>
       <div className="w-96 h-64">
         <img
           className="w-full h-full object-cover"
@@ -34,15 +48,22 @@ const MovieDetailCard = ({ movie }: Props) => {
         <p className="py-2 font-semibold leading-6">{title}</p>
         <p className="py-2 text-sm leading-6">줄거리: {summary}</p>
         <p className="py-2 text-sm leading-6">
-          감독: {diretor} / 출연: {actor}
+          감독: {director} / 출연: {actor}
         </p>
         <p className="py-2 text-sm leading-6">장르: {genre}</p>
         <p className="py-2 text-sm leading-6">관람가: {movieRated} </p>
         <p className="py-2 text-sm leading-6">상영시간: {runningTime} 분</p>
         <p className="py-2 text-sm leading-6">
-          상영기간: {`${startDate} ~ ${endDate}`}{" "}
+          상영기간: {`${startDate.split("T")[0]} ~ ${endDate.split("T")[0]}`}{" "}
         </p>
-        {/* <p className="text-sm leading-6">{isShowing(startDate, endDate)}</p> */}
+        <div>
+          <Button size="sm" onClick={handleClickUpdate}>
+            수정
+          </Button>
+          <Button size="sm" bgColor="red" form="detail-form">
+            삭제
+          </Button>
+        </div>
       </div>
     </div>
   );

@@ -13,6 +13,7 @@ export function Input({
   label,
   type = "text",
   placeholder = "",
+  ...res
 }: InputProps) {
   return (
     <div className="w-full">
@@ -26,6 +27,7 @@ export function Input({
           id={id}
           className="w-full py-2 px-2 outline-0 rounded-md border-gray-300 border-solid border-2 focus:border-indigo-500"
           placeholder={placeholder}
+          {...res}
         />
       </div>
     </div>

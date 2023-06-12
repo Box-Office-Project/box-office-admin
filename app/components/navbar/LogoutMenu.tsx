@@ -1,18 +1,18 @@
-import { redirect } from "@remix-run/node";
-import { Form } from "@remix-run/react";
+import { Form, useNavigate } from "@remix-run/react";
 import React from "react";
 
 export const LogoutMenu = () => {
+  const navigate = useNavigate();
+
   const handleLogout = () => {
-    console.log("logout");
-    redirect("/logout");
+    navigate("/logout");
   };
 
   return (
     <Form action="/logout" method="post">
       <li className="hover:bg-indigo-100 cursor-pointer" onClick={handleLogout}>
         <button type="submit" className={`pl-4 py-2`}>
-          로그아웃 1!!!
+          로그아웃
         </button>
       </li>
     </Form>
