@@ -10,9 +10,11 @@ import { Form, useActionData } from "@remix-run/react";
 import axios from "axios";
 import React from "react";
 import Button from "~/components/Button";
-import { ImageInput, Input } from "~/components/Input";
+import type { Option } from "~/components/Input";
+import { ImageInput, Input, Select } from "~/components/Input";
 import { SectionContainer } from "~/components/SectionContainer";
 import ValiadationErrorMessage from "~/components/ValiadationErrorMessage";
+import type { MovieRate } from "~/type";
 import { dateTimeParser } from "~/utils/dateTime";
 import { badRequest } from "~/utils/request.server";
 import { requireUser } from "~/utils/session.server";
@@ -31,7 +33,6 @@ export const action = async ({ request }: ActionArgs) => {
     request,
     uploadHandler
   );
-  // const formData = await request.formData();
   const title = formData.get("title");
   const summary = formData.get("summary");
   const director = formData.get("director");
@@ -108,7 +109,12 @@ type Props = {};
 
 const MovieCreate = (props: Props) => {
   const actionData = useActionData<typeof action>();
-  console.log({ actionData });
+  const movieRatedOptions: Option<MovieRate>[] = [
+    { value: "ALL", text: "전체" },
+    { value: "R12", text: "12세" },
+    { value: "R15", text: "15세" },
+    { value: "R18", text: "18세" },
+  ];
   return (
     <SectionContainer>
       <Form
@@ -126,6 +132,8 @@ const MovieCreate = (props: Props) => {
             aria-errormessage={
               actionData?.formError ? "Wrong title data" : undefined
             }
+            required
+            aria-required
           />
           <Input
             id="summary"
@@ -136,6 +144,8 @@ const MovieCreate = (props: Props) => {
             aria-errormessage={
               actionData?.formError ? "Wrong summary data" : undefined
             }
+            required
+            aria-required
           />
           <Input
             id="director"
@@ -146,6 +156,8 @@ const MovieCreate = (props: Props) => {
             aria-errormessage={
               actionData?.formError ? "Wrong director data" : undefined
             }
+            required
+            aria-required
           />
           <Input
             id="actor"
@@ -156,6 +168,8 @@ const MovieCreate = (props: Props) => {
             aria-errormessage={
               actionData?.formError ? "Wrong actor data" : undefined
             }
+            required
+            aria-required
           />
           <Input
             id="genre"
@@ -166,17 +180,20 @@ const MovieCreate = (props: Props) => {
             aria-errormessage={
               actionData?.formError ? "Wrong genre data" : undefined
             }
+            required
+            aria-required
           />
-          {/* TODO: movieRated "ALL" | "R12" | "R15" | "R18" */}
-          <Input
+          <Select
             id="movieRated"
+            name="movieRated"
+            options={movieRatedOptions}
             label="관람가"
-            placeholder="관람가"
-            defaultValue={actionData?.fields?.movieInfo?.movieRated || ""}
             aria-invalid={Boolean(actionData?.formError)}
             aria-errormessage={
               actionData?.formError ? "Wrong movie rated data" : undefined
             }
+            required
+            aria-required
           />
           <Input
             id="runningTime"
@@ -188,6 +205,8 @@ const MovieCreate = (props: Props) => {
             aria-errormessage={
               actionData?.formError ? "Wrong running time data" : undefined
             }
+            required
+            aria-required
           />
           <div className="grid grid-cols-2 gap-4">
             <Input
@@ -200,6 +219,8 @@ const MovieCreate = (props: Props) => {
               aria-errormessage={
                 actionData?.formError ? "Wrong start date data" : undefined
               }
+              required
+              aria-required
             />
             <Input
               id="endDate"
@@ -211,6 +232,8 @@ const MovieCreate = (props: Props) => {
               aria-errormessage={
                 actionData?.formError ? "Wrong end date data" : undefined
               }
+              required
+              aria-required
             />
           </div>
         </div>

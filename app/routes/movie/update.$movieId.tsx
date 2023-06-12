@@ -11,9 +11,11 @@ import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import axios from "axios";
 import React from "react";
 import Button from "~/components/Button";
-import { ImageInput, Input } from "~/components/Input";
+import type { Option } from "~/components/Input";
+import { ImageInput, Input, Select } from "~/components/Input";
 import { SectionContainer } from "~/components/SectionContainer";
 import ValiadationErrorMessage from "~/components/ValiadationErrorMessage";
+import type { MovieRate } from "~/type";
 import { dateTimeParser } from "~/utils/dateTime";
 import { badRequest } from "~/utils/request.server";
 import { requireUser } from "~/utils/session.server";
@@ -139,7 +141,12 @@ type Props = {};
 const MovieUpdate = (props: Props) => {
   const actionData = useActionData<typeof action>();
   const data = useLoaderData<typeof loader>();
-
+  const movieRatedOptions: Option<MovieRate>[] = [
+    { value: "ALL", text: "전체" },
+    { value: "R12", text: "12세" },
+    { value: "R15", text: "15세" },
+    { value: "R18", text: "18세" },
+  ];
   return (
     <SectionContainer>
       <Form
@@ -198,7 +205,7 @@ const MovieUpdate = (props: Props) => {
               actionData?.formError ? "Wrong genre data" : undefined
             }
           />
-          <Input
+          {/* <Input
             id="movieRated"
             label="관람가"
             placeholder="관람가"
@@ -207,6 +214,19 @@ const MovieUpdate = (props: Props) => {
             aria-errormessage={
               actionData?.formError ? "Wrong movie rated data" : undefined
             }
+          /> */}
+          <Select
+            id="movieRated"
+            name="movieRated"
+            options={movieRatedOptions}
+            label="관람가"
+            value={data.movieRated}
+            aria-invalid={Boolean(actionData?.formError)}
+            aria-errormessage={
+              actionData?.formError ? "Wrong movie rated data" : undefined
+            }
+            required
+            aria-required
           />
           <Input
             id="runningTime"
