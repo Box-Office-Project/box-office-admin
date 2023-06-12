@@ -3,7 +3,7 @@ import { redirect } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import axios from "axios";
 import React from "react";
-import { useLoaderData, useParams } from "@remix-run/react";
+import { Form, useLoaderData, useParams } from "@remix-run/react";
 import ErrorContainer from "~/components/ErrorContainer";
 import { badRequest } from "~/utils/request.server";
 import { requireUser } from "~/utils/session.server";
@@ -61,7 +61,7 @@ const MovieDetail = (props: Props) => {
 
   return (
     <div className="h-full">
-      <form id="detail-form" method="post"></form>
+      <Form id="detail-form" method="post"></Form>
       <MovieDetailCard movie={data} />
     </div>
   );
