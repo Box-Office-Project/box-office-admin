@@ -1,4 +1,5 @@
-import type { ActionArgs } from "@remix-run/node";
+import type { ActionArgs, LoaderArgs } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { unstable_createMemoryUploadHandler } from "@remix-run/node";
 import {
   unstable_composeUploadHandlers,
@@ -6,7 +7,7 @@ import {
   unstable_parseMultipartFormData,
 } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
-import { Form, useActionData } from "@remix-run/react";
+import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import axios from "axios";
 import React from "react";
 import Button from "~/components/Button";
@@ -19,8 +20,8 @@ import { dateTimeParser } from "~/utils/dateTime";
 import { badRequest } from "~/utils/request.server";
 import { requireUser } from "~/utils/session.server";
 
-export const action = async ({ request }: ActionArgs) => {
-  console.log("Create Action");
+export const action = async ({ request, params }: ActionArgs) => {
+  const { movieId } = params;
   const uploadHandler = unstable_composeUploadHandlers(
     unstable_createFileUploadHandler({
       maxPartSize: 5000000,
@@ -33,6 +34,7 @@ export const action = async ({ request }: ActionArgs) => {
     request,
     uploadHandler
   );
+  // const formData = await request.formData();
   const title = formData.get("title");
   const summary = formData.get("summary");
   const director = formData.get("director");
@@ -74,11 +76,12 @@ export const action = async ({ request }: ActionArgs) => {
     // new Blob([JSON.stringify(posterImg)], { type: "appliction/json" })
     ""
   );
+  debugger;
 
   try {
     const token = await requireUser(request);
-    const res = await axios.post(
-      "http://localhost:8080/api/movies",
+    const res = await axios.put(
+      `http://localhost:8080/api/movies/${movieId}`,
       requestFormData,
       {
         headers: {
@@ -87,8 +90,8 @@ export const action = async ({ request }: ActionArgs) => {
         },
       }
     );
-    if (res.data.code === 2002) {
-      return redirect("/movie");
+    if (res.data.code === 2003) {
+      return redirect(`/movie/${movieId}`);
     }
     return badRequest({
       fields,
@@ -105,10 +108,39 @@ export const action = async ({ request }: ActionArgs) => {
   }
 };
 
+export const loader = async ({ request, params }: LoaderArgs) => {
+  const { movieId } = params;
+  try {
+    const token = await requireUser(request);
+
+    const res = await axios.get(`http://localhost:8080/api/movies/${movieId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.data.code === 2001) {
+      return json(res.data.data);
+    }
+
+    return badRequest(res.data.message);
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.response?.data.code === 3003) {
+        throw new Response(`Movie with "Id: ${movieId}" not exists.`, {
+          status: 404,
+        });
+      }
+    }
+    throw Error(`Failed to retrieve movie with "id: ${movieId}"`);
+  }
+};
+
 type Props = {};
 
-const MovieCreate = (props: Props) => {
+const MovieUpdate = (props: Props) => {
   const actionData = useActionData<typeof action>();
+  const data = useLoaderData<typeof loader>();
   const movieRatedOptions: Option<MovieRate>[] = [
     { value: "ALL", text: "전체" },
     { value: "R12", text: "12세" },
@@ -127,67 +159,68 @@ const MovieCreate = (props: Props) => {
             id="title"
             label="제목"
             placeholder="제목"
-            defaultValue={actionData?.fields?.movieInfo?.title || ""}
+            defaultValue={data.title}
             aria-invalid={Boolean(actionData?.formError)}
             aria-errormessage={
               actionData?.formError ? "Wrong title data" : undefined
             }
-            required
-            aria-required
           />
           <Input
             id="summary"
             label="줄거리"
             placeholder="줄거리"
-            defaultValue={actionData?.fields?.movieInfo?.summary || ""}
+            defaultValue={data.summary}
             aria-invalid={Boolean(actionData?.formError)}
             aria-errormessage={
               actionData?.formError ? "Wrong summary data" : undefined
             }
-            required
-            aria-required
           />
           <Input
             id="director"
             label="감독"
             placeholder="감독"
-            defaultValue={actionData?.fields?.movieInfo?.director || ""}
+            defaultValue={data.director}
             aria-invalid={Boolean(actionData?.formError)}
             aria-errormessage={
               actionData?.formError ? "Wrong director data" : undefined
             }
-            required
-            aria-required
           />
           <Input
             id="actor"
             label="출연"
             placeholder="출연"
-            defaultValue={actionData?.fields?.movieInfo?.actor || ""}
+            defaultValue={data.actor}
             aria-invalid={Boolean(actionData?.formError)}
             aria-errormessage={
               actionData?.formError ? "Wrong actor data" : undefined
             }
-            required
-            aria-required
           />
           <Input
             id="genre"
             label="장르"
             placeholder="장르"
-            defaultValue={actionData?.fields?.movieInfo?.genre || ""}
+            defaultValue={data.genre}
             aria-invalid={Boolean(actionData?.formError)}
             aria-errormessage={
               actionData?.formError ? "Wrong genre data" : undefined
             }
-            required
-            aria-required
           />
+          {/* <Input
+            id="movieRated"
+            label="관람가"
+            placeholder="관람가"
+            defaultValue={data.movieRated}
+            aria-invalid={Boolean(actionData?.formError)}
+            aria-errormessage={
+              actionData?.formError ? "Wrong movie rated data" : undefined
+            }
+          /> */}
           <Select
             id="movieRated"
             name="movieRated"
             options={movieRatedOptions}
             label="관람가"
+            value={data.movieRated}
             aria-invalid={Boolean(actionData?.formError)}
             aria-errormessage={
               actionData?.formError ? "Wrong movie rated data" : undefined
@@ -200,13 +233,11 @@ const MovieCreate = (props: Props) => {
             label="러닝타임"
             placeholder="러닝타임"
             type="number"
-            defaultValue={actionData?.fields?.movieInfo?.runningTime || ""}
+            defaultValue={data.runningTime}
             aria-invalid={Boolean(actionData?.formError)}
             aria-errormessage={
               actionData?.formError ? "Wrong running time data" : undefined
             }
-            required
-            aria-required
           />
           <div className="grid grid-cols-2 gap-4">
             <Input
@@ -214,26 +245,22 @@ const MovieCreate = (props: Props) => {
               label="상영시작일"
               placeholder="상영시작일"
               type="date"
-              defaultValue={actionData?.fields?.movieInfo?.startDate || ""}
+              defaultValue={data.startDate.split("T")[0]}
               aria-invalid={Boolean(actionData?.formError)}
               aria-errormessage={
                 actionData?.formError ? "Wrong start date data" : undefined
               }
-              required
-              aria-required
             />
             <Input
               id="endDate"
               label="상영종료일"
               placeholder="상영종료일"
               type="date"
-              defaultValue={actionData?.fields?.movieInfo?.endDate || ""}
+              defaultValue={data.endDate.split("T")[0]}
               aria-invalid={Boolean(actionData?.formError)}
               aria-errormessage={
                 actionData?.formError ? "Wrong end date data" : undefined
               }
-              required
-              aria-required
             />
           </div>
         </div>
@@ -252,4 +279,4 @@ const MovieCreate = (props: Props) => {
   );
 };
 
-export default MovieCreate;
+export default MovieUpdate;

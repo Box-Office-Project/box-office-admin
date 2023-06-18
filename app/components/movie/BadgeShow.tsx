@@ -1,7 +1,7 @@
 import React from "react";
 
 type BadgeShowProps = {
-  status: "상영중" | "예매중" | "미정";
+  status: "상영중" | "예매중" | "마감";
 };
 
 const BadgeShow = ({ status }: BadgeShowProps) => {

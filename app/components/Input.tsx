@@ -1,4 +1,4 @@
-import type { InputHTMLAttributes } from "react";
+import type { InputHTMLAttributes, SelectHTMLAttributes } from "react";
 import React, { useState } from "react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 // import { PhotoIcon } from "@heroicons/react/24/outline";
@@ -13,19 +13,21 @@ export function Input({
   label,
   type = "text",
   placeholder = "",
+  ...res
 }: InputProps) {
   return (
     <div className="w-full">
       <label htmlFor={id} className="text-gray-700">
         {label}
       </label>
-      <div className="mt-2 rounded-md">
+      <div className="mt-2">
         <input
           type={type}
           name={id}
           id={id}
           className="w-full py-2 px-2 outline-0 rounded-md border-gray-300 border-solid border-2 focus:border-indigo-500"
           placeholder={placeholder}
+          {...res}
         />
       </div>
     </div>
@@ -39,7 +41,7 @@ export function PasswordInput({ id, label, placeholder = "" }: InputProps) {
       <label htmlFor={id} className="text-gray-700">
         {label}
       </label>
-      <div className="mt-2 rounded-md relative">
+      <div className="mt-2 relative">
         <input
           type={isVisible ? "text" : "password"}
           name={id}
@@ -128,6 +130,41 @@ export function ImageInput({ id, label }: InputProps) {
           </p>
         )}
       </aside> */}
+    </div>
+  );
+}
+
+export type Option<T> = {
+  value: T;
+  text: string;
+};
+
+interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
+  label: string;
+  options: Option<any>[];
+}
+
+export function Select({ label, options, ...res }: SelectProps) {
+  const { name, id, value } = res;
+  return (
+    <div className="w-full">
+      <label htmlFor={id} className="text-gray-700">
+        {label}
+      </label>
+      <div className="mt-2">
+        <select
+          name={name}
+          id={id}
+          defaultValue={value}
+          className="w-full py-2 px-2 outline-0 rounded-md border-gray-300 border-solid border-2 focus:border-indigo-500 cursor-pointer"
+        >
+          {options.map((option, index) => (
+            <option value={option.value} key={index} className="py-2">
+              {option.text}
+            </option>
+          ))}
+        </select>
+      </div>
     </div>
   );
 }
